@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields import TextField
 
 
 class Tag(models.Model):
@@ -28,7 +29,15 @@ class Receita(models.Model):
     nome = models.CharField(max_length=50)
     tags = models.ManyToManyField(Tag)
     ingrediente_receita = models.ManyToManyField(Ingrediente)
-    preparo = models.TextField()
 
     def __str__(self):
         return self.nome
+
+
+class Preparo(models.Model):
+    ordem = models.IntegerField()
+    instrucao = models.TextField()
+    receita_preparo = models.ForeignKey(Receita, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.instrucao
