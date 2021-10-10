@@ -50,3 +50,9 @@ class Receita(models.Model):
     def __str__(self):
         return self.nome
 
+
+class Comentario(models.Model):
+    nome_usuario = models.CharField(max_length=100)
+    texto = models.TextField()
+    receita_comentario = models.ForeignKey(Receita, on_delete=models.PROTECT)
+

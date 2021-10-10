@@ -3,43 +3,88 @@
 {% load static %}
 
 {% block content_block %}
+    <div class="container">
+        <div class="row">
+            <!-- Blog entries-->
+            <div class="col-lg-8">
+                <!-- Listagem de receitas start -->
+                {% for receita in object_list %}
+                    {% if receita.ativo %}
+                        <div class="card mb-4">
+                            <a href="{% url 'receita' receita.pk %}"><img class="card-img-top" src={% if receita.img %}"{{receita.img.url}}"{% else %}"{% static 'receitas/images/default.png' %}"{% endif %} alt="..." /></a>
+                            <div class="card-body">
+                                <div class="small text-muted">{{ receita.data_hora }}</div>
+                                <h2 class="card-title">{{ receita.nome }}</h2>
+                                <a class="btn btn-primary" href="{% url 'receita' receita.pk %}">Ver receita →</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <!-- Listagem de receitas end -->                   
 
-    <!-- Listagem de receitas start -->
-    {% for receita in object_list %}
-        {% if receita.ativo %}
-            <div class="card mb-4">
-                <a href="{% url 'receita' receita.pk %}"><img class="card-img-top" src={% if receita.img %}"{{receita.img.url}}"{% else %}"{% static 'receitas/images/default.png' %}"{% endif %} alt="..." /></a>
-                <div class="card-body">
-                    <div class="small text-muted">{{ receita.data_hora }}</div>
-                    <h2 class="card-title">{{ receita.nome }}</h2>
-                    <a class="btn btn-primary" href="{% url 'receita' receita.pk %}">Ver receita →</a>
+                <!-- Pagination start -->
+                <nav aria-label="Pagination">
+                    <hr class="my-0" />
+                    <ul class="pagination justify-content-center my-4">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="?page=1" aria-disabled="true">Primeira</a></li>
+                        {% endif %}
+                        <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#" aria-disabled="true">Última</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                <!-- Pagination end -->
+            </div>
+    
+            <!-- Side widgets-->
+            <div class="col-lg-4">
+                <!-- Search widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Buscar</div>
+                    <div class="card-body">
+                        <form method="GET" action="{% url 'busca' %}">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Busque por uma receita!" aria-label="Enter search term..." aria-describedby="button-search" name="busca"/>
+                                <button class="btn btn-primary" id="button-search" type="submit">Ir!</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Categories widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Tags</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    {% for tag in tags_col1 %}
+                                        <li><a href="{% url 'tag' tag.nome %}">{{ tag.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    {% for tag in tags_col2 %}
+                                        <li><a href="{% url 'tag' tag.nome %}">{{ tag.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        {% endif %}
-    {% endfor %}
-    <!-- Listagem de receitas end -->                   
-
-    <!-- Pagination start -->
-    <nav aria-label="Pagination">
-        <hr class="my-0" />
-        <ul class="pagination justify-content-center my-4">
-            {% if page_obj.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page=1">Primeira</a></li>
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
-            {% else %}
-                <li class="page-item disabled"><a class="page-link" href="?page=1" aria-disabled="true">Primeira</a></li>
-            {% endif %}
-            <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
-            {% if page_obj.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a></li>
-            {% else %}
-                <li class="page-item disabled"><a class="page-link" href="#" aria-disabled="true">Última</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-    <!-- Pagination end -->
-
-    
+        </div>
+    </div>
 
 {% endblock content_block %}
+
+

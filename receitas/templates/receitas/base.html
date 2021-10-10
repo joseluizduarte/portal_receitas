@@ -43,60 +43,8 @@
         </header>
         <!-- Page header with logo and tagline end -->
 
-        <!-- Page content-->
-        <div class="container">
-            <div class="row">
-                <!-- Blog entries-->
-                <div class="col-lg-8">
-
-                    {% block content_block %}{% endblock content_block %}
+        {% block content_block %}{% endblock content_block %}
         
-                </div>
-                <!-- Side widgets-->
-                <div class="col-lg-4">
-                    <!-- Search widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Search</div>
-                        <div class="card-body">
-                            <form method="GET" action="{% url 'busca' %}">
-                                {% csrf_token %}
-                                <div class="input-group">
-                                    <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" name="busca"/>
-                                    <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- Categories widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Categories</div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        {% for tag in tags_col1 %}
-                                            <li><a href="{% url 'tag' tag.nome %}">{{ tag.nome }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        {% for tag in tags_col2 %}
-                                            <li><a href="{% url 'tag' tag.nome %}">{{ tag.nome }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Side widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Side Widget</div>
-                        <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
